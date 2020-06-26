@@ -480,16 +480,16 @@ public class CarrierConfigLoader extends ICarrierConfigLoader.Stub {
                     SharedPreferences sharedPrefs =
                             PreferenceManager.getDefaultSharedPreferences(mContext);
                     final String lastFingerprint = sharedPrefs.getString(KEY_FINGERPRINT, null);
-                    if (!Build.FINGERPRINT.equals(lastFingerprint)) {
+                    if (!Build.DATE.equals(lastFingerprint)) {
                         log(
-                                "Build fingerprint changed. old: "
+                                "Build date changed. old: "
                                         + lastFingerprint
                                         + " new: "
-                                        + Build.FINGERPRINT);
+                                        + Build.DATE);
                         clearCachedConfigForPackage(null);
                         sharedPrefs
                                 .edit()
-                                .putString(KEY_FINGERPRINT, Build.FINGERPRINT)
+                                .putString(KEY_FINGERPRINT, Build.DATE)
                                 .apply();
                     }
                     break;
@@ -633,7 +633,6 @@ public class CarrierConfigLoader extends ICarrierConfigLoader.Stub {
         String imsi = "";
         String gid1 = "";
         String gid2 = "";
-        String iccid = "";
         String spn = TelephonyManager.from(mContext).getSimOperatorNameForPhone(phoneId);
         String simOperator = TelephonyManager.from(mContext).getSimOperatorNumericForPhone(phoneId);
         int carrierId = TelephonyManager.UNKNOWN_CARRIER_ID;
@@ -648,11 +647,10 @@ public class CarrierConfigLoader extends ICarrierConfigLoader.Stub {
             imsi = phone.getSubscriberId();
             gid1 = phone.getGroupIdLevel1();
             gid2 = phone.getGroupIdLevel2();
-            iccid = phone.getIccSerialNumber();
             carrierId = phone.getCarrierId();
             specificCarrierId = phone.getSpecificCarrierId();
         }
-        return new CarrierIdentifier(mcc, mnc, spn, imsi, gid1, gid2, iccid, carrierId, specificCarrierId);
+        return new CarrierIdentifier(mcc, mnc, spn, imsi, gid1, gid2, carrierId, specificCarrierId);
     }
 
     /** Returns the package name of a priveleged carrier app, or null if there is none. */

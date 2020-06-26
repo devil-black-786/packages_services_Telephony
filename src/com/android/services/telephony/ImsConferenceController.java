@@ -51,12 +51,6 @@ public class ImsConferenceController {
 
             mImsConferences.remove(conference);
         }
-
-        @Override
-        public void onStateChanged(Conference conference, int oldState, int newState) {
-            Log.v(this, "onStateChanged: Conference = " + conference);
-            recalculate();
-        }
     };
 
     /**
@@ -245,8 +239,7 @@ public class ImsConferenceController {
                 Log.d(this, "recalc - %s %s", conference.getState(), conference);
             }
 
-            if (!conference.isConferenceHost() &&
-                    (!conference.isMultiAnchorConferenceSupported())) {
+            if (!conference.isConferenceHost()) {
                 if (Log.VERBOSE) {
                     Log.v(this, "skipping conference (not hosted on this device): %s", conference);
                 }
